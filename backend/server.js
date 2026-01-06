@@ -36,6 +36,8 @@ app.get('/', (req, res) => {
 
 // Define port from .env file or use 5000 as default
 const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log("Server running"));
+
 
 // Start server
 app.listen(PORT, () => {
