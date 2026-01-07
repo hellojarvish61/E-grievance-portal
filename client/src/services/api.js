@@ -1,45 +1,67 @@
-import axios from 'axios';
+// import axios from 'axios';
 
-// Base URL of your backend
-const API_URL = import.meta.env.VITE_API_URL;
+// // Base URL of your backend
+// const API_URL = import.meta.env.VITE_API_URL;
 
 
-// Create axios instance with default config
+// // Create axios instance with default config
+// const api = axios.create({
+//   baseURL: API_URL,
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+// });
+
+// // Add token to every request automatically
+// api.interceptors.request.use(
+//   (config) => {
+//     // Get token from localStorage
+//     const token = localStorage.getItem('token');
+//     if (token) {
+//       // Add token to request headers
+//       config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
+
+// // Handle response errors globally
+// api.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     if (error.response?.status === 401) {
+//       // If unauthorized, clear token and redirect to login
+//       localStorage.removeItem('token');
+//       localStorage.removeItem('user');
+//       window.location.href = '/login';
+//     }
+//     return Promise.reject(error);
+//   }
+// );
+
+// export default api;
+
+
+
+import axios from "axios";
+
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
-// Add token to every request automatically
-api.interceptors.request.use(
-  (config) => {
-    // Get token from localStorage
-    const token = localStorage.getItem('token');
-    if (token) {
-      // Add token to request headers
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
+// Attach token automatically
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
-);
-
-// Handle response errors globally
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      // If unauthorized, clear token and redirect to login
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
-    }
-    return Promise.reject(error);
-  }
-);
+  return config;
+});
 
 export default api;
